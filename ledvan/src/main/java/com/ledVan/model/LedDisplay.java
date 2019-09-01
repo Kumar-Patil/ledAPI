@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.Convert;
 
 @Entity
@@ -24,9 +23,9 @@ public class LedDisplay implements Serializable {
     private long id;
 
     @ApiModelProperty(notes = "The LedDisplay date")
-    private Date date;
+    private String reportDate;
 
-    @ApiModelProperty(notes = "The LedDisplay districtName")
+    @ApiModelProperty(notes = "The LedDisplay vechicleNo")
     private String vechicleNo;
 
     @ApiModelProperty(notes = "The LedDisplay vechicleStayArea")
@@ -61,6 +60,12 @@ public class LedDisplay implements Serializable {
 
     @ApiModelProperty(notes = "The LedDisplay json data")
     private List<Display> display;
+
+    @ApiModelProperty(notes = "The LedDisplay districtName")
+    private String districtName;
+
+    @ApiModelProperty(notes = "The LedDisplay districtName")
+    private String districtAreaName;
 
     public LedDisplay() {
 
@@ -110,15 +115,6 @@ public class LedDisplay implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Column(name = "date", nullable = true)
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     @Column(name = "vechicle_stay_area", nullable = true)
@@ -193,6 +189,32 @@ public class LedDisplay implements Serializable {
     public void setDisplay(List<Display> display) {
         this.display = display;
     }
-    
+
+    @Column(name = "district_name", nullable = true)
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    @Column(name = "districtAreaName", nullable = true)
+    public String getDistrictAreaName() {
+        return districtAreaName;
+    }
+
+    public void setDistrictAreaName(String districtAreaName) {
+        this.districtAreaName = districtAreaName;
+    }
+
+    @Column(name = "report_date", nullable = true)
+    public String getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(String reportDate) {
+        this.reportDate = reportDate;
+    }
 
 }

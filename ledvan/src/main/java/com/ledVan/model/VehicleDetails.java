@@ -56,6 +56,9 @@ public class VehicleDetails implements Serializable {
     @ApiModelProperty(notes = "The district updatedAt")
     private Date updatedAt;
 
+    @ApiModelProperty(notes = "The VehicleDetails districtName")
+    private String districtName;
+
     public VehicleDetails() {
 
     }
@@ -189,6 +192,15 @@ public class VehicleDetails implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Column(name = "district_name", nullable = true)
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
     }
 
     @Override

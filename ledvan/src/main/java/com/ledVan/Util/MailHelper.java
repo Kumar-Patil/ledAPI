@@ -28,11 +28,12 @@ public class MailHelper {
     public static void sendMail(SMTPDetails mTPDetails, String reportFilePath) {
 
         try {
+            
             Properties props = new Properties();
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.smtp.host", mTPDetails.getHostName());
-            props.put("mail.smtp.port", mTPDetails.getHostPort());
+            props.put("mail.smtp.port", 587);
 
             Session session = Session.getInstance(props, new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -42,7 +43,6 @@ public class MailHelper {
 
             Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress(mTPDetails.getFromEmail(), false));
-
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mTPDetails.getToEmail()));
             msg.setSubject(mTPDetails.getEmailDefaultSubject());
             msg.setContent(mTPDetails.getEmailDefaultBody(), "text/html");

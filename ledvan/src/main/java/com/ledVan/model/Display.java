@@ -31,11 +31,11 @@ public class Display implements Serializable {
         this.displayTimingFrom = displayTimingFrom;
     }
 
-    public Integer getPeopleViewed() {
+    public String getPeopleViewed() {
         return peopleViewed;
     }
 
-    public void setPeopleViewed(Integer peopleViewed) {
+    public void setPeopleViewed(String peopleViewed) {
         this.peopleViewed = peopleViewed;
     }
 
@@ -46,7 +46,7 @@ public class Display implements Serializable {
     public void setDisplayPictureName(String displayPictureName) {
         this.displayPictureName = displayPictureName;
     }
-    private Integer peopleViewed;
+    private String peopleViewed;
     private String displayPictureName;
 
     public String getDisplayArea() {
@@ -62,5 +62,4 @@ public class Display implements Serializable {
         return "Display{" + "displayArea=" + displayArea + ", displayTimingTo=" + displayTimingTo + ", displayTimingFrom=" + displayTimingFrom + ", peopleViewed=" + peopleViewed + ", displayPictureName=" + displayPictureName + '}';
     }
 
-    
 }

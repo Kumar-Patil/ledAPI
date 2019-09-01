@@ -88,7 +88,7 @@ public class LedDisplayController {
 
         ledDisplay.setClosingPlace(display.getClosingPlace());
         ledDisplay.setClosingTime(display.getClosingTime());
-        ledDisplay.setDate(display.getDate());
+        ledDisplay.setReportDate(display.getReportDate());
         ledDisplay.setDisplay(display.getDisplay());
         ledDisplay.setDistance(display.getDistance());
         ledDisplay.setGeneralHourPictureName(display.getGeneralHourPictureName());
