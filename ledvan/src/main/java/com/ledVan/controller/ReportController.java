@@ -1,6 +1,7 @@
 package com.ledVan.controller;
 
 import com.ledVan.RequestMapper.Report;
+import com.ledVan.RequestMapper.fileUpload;
 import com.ledVan.Util.MailHelper;
 import com.ledVan.exception.ResourceNotFoundException;
 import com.ledVan.model.SMTPDetails;
@@ -18,8 +19,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiParam;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
@@ -27,11 +30,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -137,4 +144,33 @@ public class ReportController {
 
         }
     }
+
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    public ResponseEntity<?> uploadFileHandler(@RequestParam("name") String name,
+            @RequestParam("file") MultipartFile file) {
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                String rootPath = System.getProperty("catalina.home");
+                File dir = new File(rootPath + File.separator + "images");
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                String fileName = System.currentTimeMillis() + name;
+                File serverFile = new File(dir.getAbsolutePath()
+                        + File.separator + fileName);
+                try ( BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(serverFile))) {
+                    stream.write(bytes);
+                }
+                return new ResponseEntity<>(new fileUpload(fileName), HttpStatus.OK);
+            } catch (IOException e) {
+                return new ResponseEntity<>("You failed to upload " + name + " => " + e.getMessage(), HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>("You failed to upload " + name
+                    + " because the file was empty.", HttpStatus.OK);
+        }
+    }
+
 }

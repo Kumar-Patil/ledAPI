@@ -85,6 +85,17 @@ public class LedDisplayController {
         ledDisplay.setStatus(display.getStatus());
         ledDisplay.setVechicleNo(display.getVechicleNo());
         ledDisplay.setUpdatedAt(new Date());
+
+        ledDisplay.setClosingPlace(display.getClosingPlace());
+        ledDisplay.setClosingTime(display.getClosingTime());
+        ledDisplay.setDate(display.getDate());
+        ledDisplay.setDisplay(display.getDisplay());
+        ledDisplay.setDistance(display.getDistance());
+        ledDisplay.setGeneralHourPictureName(display.getGeneralHourPictureName());
+        ledDisplay.setKilometerPictureName(display.getKilometerPictureName());
+        ledDisplay.setReportingTime(display.getReportingTime());
+        ledDisplay.setVechicleStayArea(display.getVechicleStayArea());
+
         final LedDisplay updatedLedDisplay = ledDisplayRepository.save(ledDisplay);
         return ResponseEntity.ok(updatedLedDisplay);
     }

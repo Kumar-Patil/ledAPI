@@ -29,7 +29,7 @@ public class PDFConversionDemo {
     public static void main(String[] args) {
         System.out.println("start Date" + new Date());
         try {
-            OutputStream file = new FileOutputStream(new File("C:\\ledVan\\ledvan\\SamplePDF.pdf"));
+            OutputStream file = new FileOutputStream(new File("C:\\ledVan\\images\\dailyReport.pdf"));
             Document document = new Document();
             PdfWriter.getInstance(document, file);
             document.open();
@@ -142,7 +142,7 @@ public class PDFConversionDemo {
             pdfTable.addCell(cell1);
             document.add(pdfTable);
 
-            Image image = Image.getInstance("C:\\ledVan\\ledvan\\led.png");
+            Image image = Image.getInstance("C:\\ledVan\\images\\led.png");
             image.scaleToFit(250,250);
             image.setAlignment(Image.ALIGN_CENTER);
             document.add(image);
