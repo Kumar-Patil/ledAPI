@@ -1,12 +1,10 @@
 package com.ledVan.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import com.ledVan.model.AreaDetails;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public interface AreaRepository extends JpaRepository<AreaDetails, Long>{
+public interface AreaRepository extends CrudRepository<AreaDetails, Long>{
 
     @Query("select count(e) from AreaDetails e")
     long areaCount();

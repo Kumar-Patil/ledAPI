@@ -114,13 +114,20 @@ public class DashboardController {
     }
 
     @ApiOperation(value = "Get report count")
-    @GetMapping("/dashboard/reportcount/{status}")
-    public Map<String, Long> getEmployeeById(
-            @ApiParam(value = "status will retrieve report count", required = true)
-            @PathVariable(value = "status") String status)
+    @GetMapping("/dashboard/reportcount/unreviedreport")
+    public Map<String, Long> getUnreviedreport()
             throws ResourceNotFoundException {
         Map<String, Long> response = new HashMap<>();
-        response.put("count", ledDisplayRepository.ledDisplayCount(status));
+        response.put("count", ledDisplayRepository.unreviewedReport("New"));
+        return response;
+    }
+    
+    @ApiOperation(value = "Get report count")
+    @GetMapping("/dashboard/reportcount/revieddreport")
+    public Map<String, Long> getEmployeeById()
+            throws ResourceNotFoundException {
+        Map<String, Long> response = new HashMap<>();
+        response.put("count", ledDisplayRepository.reviewedReport("New"));
         return response;
     }
 }

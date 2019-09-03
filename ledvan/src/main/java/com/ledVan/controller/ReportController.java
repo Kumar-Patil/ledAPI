@@ -60,6 +60,9 @@ public class ReportController {
 
     @Value("${image.path}")
     public String imgePath;
+    
+    @Value("${nodata.report.path}")
+    public String noData;
 
     /**
      *
@@ -81,7 +84,13 @@ public class ReportController {
     @GetMapping("/download/report/daily")
     public void downloadDailyReport(@RequestParam String date, HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException {
         List<LedDisplay> listLedDisplay = ledDisplayRepository.getDailyReportData(date);
-        String fileName = GeneratePDF.generatePDF(reportDailyPath, imgePath, listLedDisplay, Util.getFormatedDate(date));
+        String fileName = null;
+        if (listLedDisplay.size() > 0) {
+            fileName = GeneratePDF.generatePDF(reportDailyPath, imgePath, listLedDisplay, Util.getFormatedDate(date));
+        }else
+        {
+            fileName = GeneratePDF.noDataAvailable(noData);
+        }
         File file = new File(fileName);
         if (file.exists()) {
             String mimeType = URLConnection.guessContentTypeFromName(file.getName());
@@ -111,7 +120,12 @@ public class ReportController {
         SMTPDetails mTPDetails = sMTPRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("SMTP not found for this id :: " + id));
         List<LedDisplay> listLedDisplay = ledDisplayRepository.getDailyReportData(generateReport.getReportDate());
-        String fileName = GeneratePDF.generatePDF(reportDailyPath, imgePath, listLedDisplay, Util.getFormatedDate(generateReport.getReportDate()));
+        String fileName = null;
+        if(listLedDisplay.size() > 0) {
+            GeneratePDF.generatePDF(reportDailyPath, imgePath, listLedDisplay, Util.getFormatedDate(generateReport.getReportDate()));
+        } else {
+            fileName = GeneratePDF.noDataAvailable(noData);
+        }
         if (!generateReport.getEmailContentBody().isEmpty()) {
             mTPDetails.setEmailDefaultBody(generateReport.getEmailContentBody());
         }

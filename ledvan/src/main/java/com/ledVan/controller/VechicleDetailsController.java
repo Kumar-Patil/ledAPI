@@ -49,7 +49,7 @@ public class VechicleDetailsController {
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/vehicleDetails")
     public List<VehicleDetails> getAll() {
-        return vechicleDetailsRepository.findAll();
+        return (List<VehicleDetails>) vechicleDetailsRepository.findAll();
     }
 
     @ApiOperation(value = "Get vehicleDetails by Id")

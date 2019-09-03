@@ -49,7 +49,7 @@ public class DistrictController {
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/district")
     public List<District> getAll() {
-        return districtRepository.findAll();
+        return (List<District>) districtRepository.findAll();
     }
 
     @ApiOperation(value = "Get district by Id")

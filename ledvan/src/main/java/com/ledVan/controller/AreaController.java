@@ -50,7 +50,7 @@ public class AreaController {
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/area")
     public List<AreaDetails> getAll() {
-        return areaRepository.findAll();
+        return (List<AreaDetails>) areaRepository.findAll();
     }
     
     @ApiOperation(value = "Get area by Id")

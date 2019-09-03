@@ -49,7 +49,7 @@ public class RouteController {
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/routemap")
     public List<RouteMap> getAll() {
-        return routeMapRepository.findAll();
+        return (List<RouteMap>) routeMapRepository.findAll();
     }
 
     @ApiOperation(value = "Get routemap by Id")

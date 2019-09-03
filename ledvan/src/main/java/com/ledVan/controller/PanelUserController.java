@@ -49,7 +49,7 @@ public class PanelUserController {
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/paneluser")
     public List<PanelUser> getAll() {
-        return panelUserRepository.findAll();
+        return (List<PanelUser>) panelUserRepository.findAll();
     }
 
     @ApiOperation(value = "Get paneluser by Id")

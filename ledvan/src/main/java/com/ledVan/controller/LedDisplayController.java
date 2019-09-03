@@ -49,7 +49,7 @@ public class LedDisplayController {
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/leddisplay")
     public List<LedDisplay> getAll() {
-        return ledDisplayRepository.findAll();
+        return (List<LedDisplay>) ledDisplayRepository.findAll();
     }
 
     @ApiOperation(value = "Get district by Id")

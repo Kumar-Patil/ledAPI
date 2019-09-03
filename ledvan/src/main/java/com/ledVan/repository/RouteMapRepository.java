@@ -1,11 +1,10 @@
 package com.ledVan.repository;
 
 import com.ledVan.model.RouteMap;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 
-@Repository
-public interface RouteMapRepository extends JpaRepository<RouteMap, Long>{
+public interface RouteMapRepository extends CrudRepository<RouteMap, Long>{
 
 }

@@ -1,13 +1,11 @@
 package com.ledVan.repository;
 
 import com.ledVan.model.District;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
 
-@Repository
-public interface DistrictRepository extends JpaRepository<District, Long>{
+public interface DistrictRepository extends CrudRepository<District, Long>{
 
     @Query("select count(e) from District e")
     long districtCount();

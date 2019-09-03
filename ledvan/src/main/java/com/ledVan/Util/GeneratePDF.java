@@ -136,15 +136,45 @@ public class GeneratePDF {
                     cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
                     pdfTable.addCell(cell1);
                     document.add(pdfTable);
-
-                    Image image = Image.getInstance(imagePath + display.getDisplayPictureName());
-                    image.scaleToFit(250, 250);
-                    image.setAlignment(Image.ALIGN_CENTER);
-                    document.add(image);
+                    if (!display.getDisplayPictureName().isEmpty() && display.getDisplayPictureName() != null) {
+                        Image image = Image.getInstance(imagePath + display.getDisplayPictureName());
+                        image.scaleToFit(250, 250);
+                        image.setAlignment(Image.ALIGN_CENTER);
+                        document.add(image);
+                    }
                 }
             }
             document.close();
             file.close();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return pdfFilePath;
+    }
+
+    public static String noDataAvailable(String pdfFilePath) {
+        try {
+            try ( OutputStream file = new FileOutputStream(new File(pdfFilePath))) {
+                Document document = new Document();
+                PdfWriter.getInstance(document, file);
+                document.open();
+
+                document.newPage();
+                //Create Paragraph
+                Paragraph paragraph = new Paragraph("Stage Light & Sound Status Report", new Font(Font.FontFamily.TIMES_ROMAN, 14,
+                        Font.NORMAL));
+                paragraph.setAlignment(Element.ALIGN_CENTER);
+                Paragraph paragraph1 = new Paragraph("No Data Available", new Font(Font.FontFamily.TIMES_ROMAN, 14,
+                        Font.NORMAL));
+                paragraph1.setAlignment(Element.ALIGN_CENTER);
+                paragraph1.add(new Paragraph(" "));
+                document.add(paragraph1);
+                document.add(paragraph);
+
+                document.close();
+            }
 
         } catch (Exception e) {
 

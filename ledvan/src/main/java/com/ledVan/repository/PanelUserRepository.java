@@ -1,13 +1,11 @@
 package com.ledVan.repository;
 
 import com.ledVan.model.PanelUser;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
 
-@Repository
-public interface PanelUserRepository extends JpaRepository<PanelUser, Long>{
+public interface PanelUserRepository extends CrudRepository<PanelUser, Long>{
 
     @Query("select count(e) from PanelUser e")
     long panelUserCount();

@@ -1,10 +1,9 @@
 package com.ledVan.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import com.ledVan.model.SMTPDetails;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public interface SMTPRepository extends JpaRepository<SMTPDetails, Long>{
+
+public interface SMTPRepository extends CrudRepository<SMTPDetails, Long>{
 
 }

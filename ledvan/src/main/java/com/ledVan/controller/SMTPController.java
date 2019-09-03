@@ -49,7 +49,7 @@ public class SMTPController {
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/smtp")
     public List<SMTPDetails> getAll() {
-        return sMTPRepository.findAll();
+        return (List<SMTPDetails>) sMTPRepository.findAll();
     }
 
     @ApiOperation(value = "Get smtp by Id")
