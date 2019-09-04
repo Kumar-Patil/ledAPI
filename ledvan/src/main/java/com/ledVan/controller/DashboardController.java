@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@CrossOrigin(maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RequestMapping("/api/v1")
 @Api(value = "Dashboard API List", description = "Area API List")
 public class DashboardController {

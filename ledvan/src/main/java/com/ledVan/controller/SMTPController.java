@@ -29,7 +29,7 @@ import java.util.Date;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@CrossOrigin(maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
 @RequestMapping("/api/v1")
 @Api(value = "SMTP API List", description = "SMTP API List")
 public class SMTPController {

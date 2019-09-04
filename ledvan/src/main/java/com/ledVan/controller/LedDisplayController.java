@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @CrossOrigin(maxAge = 3600)
 @RequestMapping("/api/v1")
-@Api(value = "Led Display API List", description = "District API List")
+@Api(value = "Led Display API List", description = "Led Display API List")
 public class LedDisplayController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class LedDisplayController {
      *
      * @return
      */
-    @ApiOperation(value = "View a list of available district", response = List.class)
+    @ApiOperation(value = "View a list of available Led Display", response = List.class)
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully retrieved list"),
         @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -52,7 +52,7 @@ public class LedDisplayController {
         return (List<LedDisplay>) ledDisplayRepository.findAll();
     }
 
-    @ApiOperation(value = "Get district by Id")
+    @ApiOperation(value = "Get Led Display by Id")
     @GetMapping("/leddisplay/{id}")
     public ResponseEntity<LedDisplay> getById(
             @ApiParam(value = "LedDisplay id from which LedDisplay object will retrieve", required = true)
@@ -66,7 +66,7 @@ public class LedDisplayController {
     @ApiOperation(value = "Add LedDisplay")
     @PostMapping("/leddisplay")
     public LedDisplay create(
-            @ApiParam(value = "district object store in database table", required = true)
+            @ApiParam(value = "Led Display object store in database table", required = true)
             @Valid @RequestBody LedDisplay ledDisplay) {
         ledDisplay.setCreatedAt(new Date());
         ledDisplay.setUpdatedAt(new Date());
@@ -112,5 +112,35 @@ public class LedDisplayController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    @ApiOperation(value = "Un Reviewed", response = List.class)
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successfully retrieved list"),
+        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
+    @GetMapping("/leddisplay/unReviewed")
+    public List<LedDisplay> unReviewed() {
+        return (List<LedDisplay>) ledDisplayRepository.unReviewed("New");
+    }
+    
+     /**
+     *
+     * @return
+     */
+    @ApiOperation(value = "Reviewed", response = List.class)
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successfully retrieved list"),
+        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
+    @GetMapping("/leddisplay/reviewed")
+    public List<LedDisplay> reviewed() {
+        return (List<LedDisplay>) ledDisplayRepository.reviewed("New");
     }
 }
