@@ -59,6 +59,9 @@ public class VehicleDetails implements Serializable {
     @ApiModelProperty(notes = "The VehicleDetails districtName")
     private String districtName;
 
+    @ApiModelProperty(notes = "The VehicleDetails districtName")
+    private long districtId;
+    
     public VehicleDetails() {
 
     }
@@ -203,6 +206,16 @@ public class VehicleDetails implements Serializable {
         this.districtName = districtName;
     }
 
+    @Column(name = "district_id", nullable = true)
+    public long getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(long districtId) {
+        this.districtId = districtId;
+    }
+
+    
     @Override
     public String toString() {
         return "VehicleDetails{" + "id=" + id + ", vehicleNo=" + vehicleNo + ", driverName=" + driverName + ", driverMobileNo=" + driverMobileNo + ", driverPicture=" + driverPicture + ", operatorPicture=" + operatorPicture + ", districtAreaName=" + districtAreaName + ", districtAreaId=" + districtAreaId + ", operatorName=" + operatorName + ", operatorMobileNo=" + operatorMobileNo + ", vehicleDetails=" + vehicleDetails + '}';

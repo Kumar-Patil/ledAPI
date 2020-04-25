@@ -25,4 +25,16 @@ public interface LedDisplayRepository extends CrudRepository<LedDisplay, Long> {
     
     @Query("select e from LedDisplay e where e.status !=:status")
     List<LedDisplay> reviewed(@Param("status") String status);
+    
+    @Query("select count(e) from LedDisplay e where e.status=:status and e.districtId=:districtId")
+    long unreviewedReport(@Param("status") String status, @Param("districtId") long districtId);
+    
+    @Query("select count(e) from LedDisplay e where e.status !=:status and e.districtId=:districtId")
+    long reviewedReport(@Param("status") String status, @Param("districtId") long districtId);
+    
+    @Query("select e from LedDisplay e where e.status=:status and e.districtId=:districtId")
+    List<LedDisplay> unReviewed(@Param("status") String status, @Param("districtId") long districtId);
+    
+    @Query("select e from LedDisplay e where e.status !=:status and e.districtId=:districtId")
+    List<LedDisplay> reviewed(@Param("status") String status, @Param("districtId") long districtId);
 }

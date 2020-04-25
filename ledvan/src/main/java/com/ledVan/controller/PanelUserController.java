@@ -1,5 +1,6 @@
 package com.ledVan.controller;
 
+import com.ledVan.Util.Constants;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +24,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import com.ledVan.exception.ResourceNotFoundException;
-import com.ledVan.model.PanelUser;
-import com.ledVan.repository.PanelUserRepository;
+import com.ledVan.model.Admin;
+import com.ledVan.repository.AdminRepository;
 import java.util.Date;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -35,76 +36,82 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class PanelUserController {
 
     @Autowired
-    private PanelUserRepository panelUserRepository;
+    private AdminRepository adminRepository;
 
     /**
      *
      * @return
      */
-    @ApiOperation(value = "View a list of available paneluser", response = List.class)
+    @ApiOperation(value = "View a list of available panel", response = List.class)
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully retrieved list"),
         @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
         @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
-    @GetMapping("/paneluser")
-    public List<PanelUser> getAll() {
-        return (List<PanelUser>) panelUserRepository.findAll();
+    @GetMapping("/panel")
+    public List<Admin> getAll() {
+        return (List<Admin>) adminRepository.findAll();
     }
 
-    @ApiOperation(value = "Get paneluser by Id")
-    @GetMapping("/paneluser/{id}")
-    public ResponseEntity<PanelUser> getById(
-            @ApiParam(value = "paneluser id from which paneluser object will retrieve", required = true)
-            @PathVariable(value = "id") Long id)
-            throws ResourceNotFoundException {
-        PanelUser paneluser = panelUserRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("paneluser not found for this id :: " + id));
-        return ResponseEntity.ok().body(paneluser);
-    }
-
-    @ApiOperation(value = "Add paneluser")
-    @PostMapping("/paneluser")
-    public PanelUser create(
-            @ApiParam(value = "paneluser object store in database table", required = true)
-            @Valid @RequestBody PanelUser panelUser) {
-        panelUser.setCreatedAt(new Date());
-        panelUser.setUpdatedAt(new Date());
-        return panelUserRepository.save(panelUser);
-    }
-
-    @ApiOperation(value = "update paneluser")
-    @PutMapping("/paneluser/{id}")
-    public ResponseEntity<PanelUser> update(
-            @ApiParam(value = "paneluser Id to update paneluser object", required = true)
-            @PathVariable(value = "id") Long districtId,
-            @ApiParam(value = "Update paneluser object", required = true)
-            @Valid @RequestBody PanelUser panelUser) throws ResourceNotFoundException {
-        PanelUser panelUser1 = panelUserRepository.findById(districtId)
-                .orElseThrow(() -> new ResourceNotFoundException("paneluser not found for this id :: " + districtId));
-
-        panelUser1.setDistrictName(panelUser.getDistrictName());
-        panelUser1.setDistrictId(panelUser.getDistrictId());
-        panelUser1.setEmail(panelUser.getEmail());
-        panelUser1.setMobileNumber(panelUser.getMobileNumber());
-        panelUser1.setPassword(panelUser.getPassword());
-        panelUser1.setUpdatedAt(new Date());
-
-        final PanelUser updatedPanelUser = panelUserRepository.save(panelUser1);
-        return ResponseEntity.ok(updatedPanelUser);
-    }
-
-    @ApiOperation(value = "delete paneluser")
-    @DeleteMapping("/paneluser/{id}")
-    public Map<String, Boolean> delete(
-            @ApiParam(value = "paneluser Id from which paneluser object will delete from database table", required = true)
+    @ApiOperation(value = "Get panel by Id")
+    @GetMapping("/panel/{id}")
+    public ResponseEntity<Admin> getById(
+            @ApiParam(value = "panel id from which admin object will retrieve", required = true)
             @PathVariable(value = "id") Long districtId)
             throws ResourceNotFoundException {
-        PanelUser district = panelUserRepository.findById(districtId)
-                .orElseThrow(() -> new ResourceNotFoundException("paneluser not found for this id :: " + districtId));
-        panelUserRepository.delete(district);
+        Admin admin = adminRepository.findById(districtId)
+                .orElseThrow(() -> new ResourceNotFoundException("panel not found for this id :: " + districtId));
+        return ResponseEntity.ok().body(admin);
+    }
+
+    @ApiOperation(value = "Add panel")
+    @PostMapping("/panel")
+    public Admin create(
+            @ApiParam(value = "panel object store in database table", required = true)
+            @Valid @RequestBody Admin admin) {
+        admin.setCreatedAt(new Date());
+        admin.setUpdatedAt(new Date());
+        admin.setRoleId(3);
+        admin.setRoleName(Constants.roleName(3));
+        return adminRepository.save(admin);
+    }
+
+    @ApiOperation(value = "Update panel")
+    @PutMapping("/panel/{id}")
+    public ResponseEntity<Admin> update(
+            @ApiParam(value = "panel Id to update panel object", required = true)
+            @PathVariable(value = "id") Long id,
+            @ApiParam(value = "Update panel object", required = true)
+            @Valid @RequestBody Admin adminDetails) throws ResourceNotFoundException {
+        Admin admin = adminRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("panel not found for this id :: " + id));
+
+        admin.setUpdatedAt(new Date());
+        admin.setEmail(adminDetails.getEmail());
+        admin.setFirstName(adminDetails.getFirstName());
+        admin.setLastName(adminDetails.getLastName());
+        admin.setMobileNo(adminDetails.getMobileNo());
+        admin.setPassword(adminDetails.getPassword());
+        admin.setDistrictId(adminDetails.getDistrictId());
+        admin.setDistrictName(adminDetails.getDistrictName());
+        admin.setRoleId(3);
+        admin.setRoleName(Constants.roleName(3));
+        final Admin adminDetails1 = adminRepository.save(admin);
+        return ResponseEntity.ok(adminDetails1);
+    }
+
+    @ApiOperation(value = "Delete panel")
+    @DeleteMapping("/panel/{id}")
+    public Map<String, Boolean> delete(
+            @ApiParam(value = "panel Id from which panel object will delete from database table", required = true)
+            @PathVariable(value = "id") Long districtId)
+            throws ResourceNotFoundException {
+        Admin admin = adminRepository.findById(districtId)
+                .orElseThrow(() -> new ResourceNotFoundException("panel not found for this id :: " + districtId));
+        adminRepository.delete(admin);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+
 }

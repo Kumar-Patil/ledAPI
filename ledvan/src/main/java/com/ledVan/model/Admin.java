@@ -1,5 +1,6 @@
 package com.ledVan.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import java.util.Date;
 @Entity
 @Table(name = "user_details")
 @ApiModel(description = "All details about the Admin. ")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Admin implements Serializable {
 
     @ApiModelProperty(notes = "The database generated district ID")
@@ -25,9 +27,6 @@ public class Admin implements Serializable {
 
     @ApiModelProperty(notes = "The Admin lastName")
     private String lastName;
-
-    @ApiModelProperty(notes = "The Admin userName")
-    private String userName;
 
     @ApiModelProperty(notes = "The Admin password")
     private String password;
@@ -44,6 +43,11 @@ public class Admin implements Serializable {
     @ApiModelProperty(notes = "The Admin updatedAt")
     private Date updatedAt;
 
+    @ApiModelProperty(notes = "Role Id")
+    private long roleId;
+    
+    @ApiModelProperty(notes = "roleName")
+    private String roleName;
     public Admin() {
 
     }
@@ -74,15 +78,6 @@ public class Admin implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    @Column(name = "user_name", nullable = true)
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     @Column(name = "password", nullable = true)
@@ -130,10 +125,47 @@ public class Admin implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "Admin{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName + ", password=" + password + ", email=" + email + ", mobileNo=" + mobileNo + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
+    @ApiModelProperty(notes = "The PanelUser districtName")
+    private String districtName;
+
+    @ApiModelProperty(notes = "The PanelUser districtId")
+    private long districtId;
+
+    @Column(name = "district_id", nullable = false)
+    public long getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(long districtId) {
+        this.districtId = districtId;
+    }
+
+    @Column(name = "district_name", nullable = false)
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+   @Column(name = "role_id", nullable = false)
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
+    }
+
+    @Column(name = "role_name", nullable = false)
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
     
-
+    
 }

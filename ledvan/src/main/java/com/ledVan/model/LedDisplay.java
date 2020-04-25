@@ -67,6 +67,9 @@ public class LedDisplay implements Serializable {
     @ApiModelProperty(notes = "The LedDisplay districtName")
     private String districtAreaName;
 
+    @ApiModelProperty(notes = "The LedDisplay districtName")
+    private long districtId;
+    
     public LedDisplay() {
 
     }
@@ -217,4 +220,14 @@ public class LedDisplay implements Serializable {
         this.reportDate = reportDate;
     }
 
+    @Column(name = "district_id", nullable = true)
+    public long getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(long districtId) {
+        this.districtId = districtId;
+    }
+
+    
 }

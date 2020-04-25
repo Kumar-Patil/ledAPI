@@ -1,6 +1,7 @@
 package com.ledVan.controller;
 
 import com.ledVan.RequestMapper.Login;
+import com.ledVan.Util.Constants;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class AdminController {
 
     /**
      *
+     * @param loggedInUserId
      * @return
      */
     @ApiOperation(value = "View a list of available admins", response = List.class)
@@ -91,7 +93,10 @@ public class AdminController {
         admin.setLastName(adminDetails.getLastName());
         admin.setMobileNo(adminDetails.getMobileNo());
         admin.setPassword(adminDetails.getPassword());
-        admin.setUserName(adminDetails.getUserName());
+        admin.setDistrictId(adminDetails.getDistrictId());
+        admin.setDistrictName(adminDetails.getDistrictName());
+        admin.setId(adminDetails.getRoleId());
+        admin.setRoleName(Constants.roleName(adminDetails.getRoleId()));
         final Admin adminDetails1 = adminRepository.save(admin);
         return ResponseEntity.ok(adminDetails1);
     }

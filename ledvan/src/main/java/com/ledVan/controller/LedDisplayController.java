@@ -23,10 +23,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import com.ledVan.exception.ResourceNotFoundException;
+import com.ledVan.model.Admin;
 import com.ledVan.model.LedDisplay;
+import com.ledVan.repository.AdminRepository;
 import com.ledVan.repository.LedDisplayRepository;
 import java.util.Date;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
@@ -36,6 +39,9 @@ public class LedDisplayController {
 
     @Autowired
     private LedDisplayRepository ledDisplayRepository;
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     /**
      *
@@ -48,7 +54,7 @@ public class LedDisplayController {
         @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/leddisplay")
-    public List<LedDisplay> getAll() {
+    public List<LedDisplay> getAll(@RequestHeader("loggedInUserId") Integer loggedInUserId) {
         return (List<LedDisplay>) ledDisplayRepository.findAll();
     }
 
@@ -113,9 +119,10 @@ public class LedDisplayController {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
-    
+
     /**
      *
+     * @param loggedInUserId
      * @return
      */
     @ApiOperation(value = "Un Reviewed", response = List.class)
@@ -125,12 +132,18 @@ public class LedDisplayController {
         @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/leddisplay/unReviewed")
-    public List<LedDisplay> unReviewed() {
-        return (List<LedDisplay>) ledDisplayRepository.unReviewed("New");
+    public List<LedDisplay> unReviewed(@RequestHeader("loggedInUserId") Integer loggedInUserId) throws ResourceNotFoundException {
+        Admin admin = this.getUser(loggedInUserId);
+        if (admin.getRoleId() == 3) {
+            return ledDisplayRepository.unReviewed("New", admin.getDistrictId());
+        } else {
+            return (List<LedDisplay>) ledDisplayRepository.unReviewed("New");
+        }
     }
-    
-     /**
+
+    /**
      *
+     * @param loggedInUserId
      * @return
      */
     @ApiOperation(value = "Reviewed", response = List.class)
@@ -140,7 +153,18 @@ public class LedDisplayController {
         @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/leddisplay/reviewed")
-    public List<LedDisplay> reviewed() {
-        return (List<LedDisplay>) ledDisplayRepository.reviewed("New");
+    public List<LedDisplay> reviewed(@RequestHeader("loggedInUserId") Integer loggedInUserId) throws ResourceNotFoundException {
+        Admin admin = this.getUser(loggedInUserId);
+        if (admin.getRoleId() == 3) {
+            return (List<LedDisplay>) ledDisplayRepository.reviewed("New", admin.getDistrictId());
+        } else {
+            return (List<LedDisplay>) ledDisplayRepository.reviewed("New");
+        }
+    }
+
+    private Admin getUser(long loggedInUserId) throws ResourceNotFoundException {
+        Admin admin = adminRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("user not found for this id :: " + loggedInUserId));
+        return admin;
     }
 }

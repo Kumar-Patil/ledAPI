@@ -23,10 +23,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import com.ledVan.exception.ResourceNotFoundException;
+import com.ledVan.model.Admin;
 import com.ledVan.model.AreaDetails;
+import com.ledVan.repository.AdminRepository;
 import com.ledVan.repository.AreaRepository;
 import java.util.Date;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 
 @RestController
@@ -37,9 +40,13 @@ public class AreaController {
     
     @Autowired
     private AreaRepository areaRepository;
+    
+    @Autowired
+    private AdminRepository adminRepository;
 
     /**
      *
+     * @param loggedInUserId
      * @return
      */
     @ApiOperation(value = "View a list of available area", response = List.class)
@@ -49,8 +56,14 @@ public class AreaController {
         @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/area")
-    public List<AreaDetails> getAll() {
-        return (List<AreaDetails>) areaRepository.findAll();
+    public List<AreaDetails> getAll(@RequestHeader("loggedInUserId") Integer loggedInUserId) throws ResourceNotFoundException {
+        Admin admin = this.getUser(loggedInUserId);
+        if (admin.getRoleId() == 3) {
+            return areaRepository.getListOfAreas(admin.getDistrictId());
+        } else {
+            return (List<AreaDetails>) areaRepository.findAll();
+        }
+        
     }
     
     @ApiOperation(value = "Get area by Id")
@@ -103,5 +116,11 @@ public class AreaController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+    
+     private Admin getUser(long loggedInUserId) throws ResourceNotFoundException {
+        Admin admin = adminRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("user not found for this id :: " + loggedInUserId));
+        return admin;
     }
 }

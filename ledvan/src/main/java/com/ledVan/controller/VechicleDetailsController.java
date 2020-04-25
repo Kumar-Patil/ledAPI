@@ -23,10 +23,13 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import com.ledVan.exception.ResourceNotFoundException;
+import com.ledVan.model.Admin;
 import com.ledVan.model.VehicleDetails;
+import com.ledVan.repository.AdminRepository;
 import com.ledVan.repository.VechicleDetailsRepository;
 import java.util.Date;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*", maxAge = 3600)
@@ -36,6 +39,9 @@ public class VechicleDetailsController {
 
     @Autowired
     private VechicleDetailsRepository vechicleDetailsRepository;
+    
+    @Autowired
+    private AdminRepository adminRepository;
 
     /**
      *
@@ -48,8 +54,13 @@ public class VechicleDetailsController {
         @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/vehicleDetails")
-    public List<VehicleDetails> getAll() {
-        return (List<VehicleDetails>) vechicleDetailsRepository.findAll();
+    public List<VehicleDetails> getAll(@RequestHeader("loggedInUserId") Integer loggedInUserId) throws ResourceNotFoundException {
+        Admin admin = this.getUser(loggedInUserId);
+        if (admin.getRoleId() == 3) {
+            return vechicleDetailsRepository.vechicleDetails(admin.getDistrictId());
+        } else {
+            return (List<VehicleDetails>) vechicleDetailsRepository.findAll();
+        }
     }
 
     @ApiOperation(value = "Get vehicleDetails by Id")
@@ -112,5 +123,11 @@ public class VechicleDetailsController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+    
+    private Admin getUser(long loggedInUserId) throws ResourceNotFoundException {
+        Admin admin = adminRepository.findById(loggedInUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("user not found for this id :: " + loggedInUserId));
+        return admin;
     }
 }
