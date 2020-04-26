@@ -1,6 +1,8 @@
 package com.ledVan.controller;
 
 import com.ledVan.Util.Constants;
+import com.ledVan.Util.EncryptionDecryption;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+import com.ledVan.exception.EncryptionDecryptionException;
 import com.ledVan.exception.ResourceNotFoundException;
 import com.ledVan.model.Admin;
 import com.ledVan.repository.AdminRepository;
@@ -68,11 +72,12 @@ public class PanelUserController {
     @PostMapping("/panel")
     public Admin create(
             @ApiParam(value = "panel object store in database table", required = true)
-            @Valid @RequestBody Admin admin) {
+            @Valid @RequestBody Admin admin) throws EncryptionDecryptionException {
         admin.setCreatedAt(new Date());
         admin.setUpdatedAt(new Date());
         admin.setRoleId(3);
         admin.setRoleName(Constants.roleName(3));
+        admin.setPassword(EncryptionDecryption.encrypt(admin.getPassword(), Constants.SECRETKEY));
         return adminRepository.save(admin);
     }
 
@@ -82,7 +87,7 @@ public class PanelUserController {
             @ApiParam(value = "panel Id to update panel object", required = true)
             @PathVariable(value = "id") Long id,
             @ApiParam(value = "Update panel object", required = true)
-            @Valid @RequestBody Admin adminDetails) throws ResourceNotFoundException {
+            @Valid @RequestBody Admin adminDetails) throws ResourceNotFoundException, EncryptionDecryptionException {
         Admin admin = adminRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("panel not found for this id :: " + id));
 
@@ -91,7 +96,7 @@ public class PanelUserController {
         admin.setFirstName(adminDetails.getFirstName());
         admin.setLastName(adminDetails.getLastName());
         admin.setMobileNo(adminDetails.getMobileNo());
-        admin.setPassword(adminDetails.getPassword());
+        admin.setPassword(EncryptionDecryption.encrypt(admin.getPassword(), Constants.SECRETKEY));
         admin.setDistrictId(adminDetails.getDistrictId());
         admin.setDistrictName(adminDetails.getDistrictName());
         admin.setRoleId(3);

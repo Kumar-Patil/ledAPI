@@ -23,4 +23,6 @@ public class Constants {
         role.put(3L, "PanelUser");
         return role.get(roleId);
     }
+    
+    public static final String SECRETKEY = "ILOVEMYINDIA";
 }
